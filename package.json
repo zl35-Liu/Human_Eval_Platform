@@ -1,0 +1,12 @@
+{
+  "name": "human-eval-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Frontend regression tests for Human Eval Platform",
+  "scripts": {
+    "test": "node tests/test_reference_editor.js"
+  },
+  "devDependencies": {
+    "linkedom": "^0.18.12"
+  }
+}

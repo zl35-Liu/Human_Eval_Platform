@@ -1,0 +1,116 @@
+{
+  "id": "demo-video-evaluation",
+  "title": "Generic Video Evaluation Demo",
+  "status": "published",
+  "version": 1,
+  "videoFolder": "demo",
+  "participantFields": [
+    {
+      "id": "participant_code",
+      "label": "Participant identifier",
+      "type": "text",
+      "required": true,
+      "placeholder": "Enter account-demo"
+    },
+    {
+      "id": "group",
+      "label": "Group",
+      "type": "text",
+      "required": false,
+      "placeholder": "Optional"
+    }
+  ],
+  "instructions": {
+    "title": "Demo Instructions",
+    "overview": "Watch the demo clip and rate it using the two sample dimensions. Replace all demo media, dimensions, and scoring rules when creating a real evaluation.",
+    "exampleVideoPath": "synthetic-motion-demo.mp4",
+    "scoringGuide": [
+      "Scores range from 0 to 5, where a higher score indicates stronger agreement with the criterion.",
+      "Confidence ranges from 1 to 5 and indicates certainty in the rating.",
+      "Explanations should cite observable evidence from the video or transcript."
+    ],
+    "answerExample": {
+      "videoTitle": "Synthetic Motion Demo",
+      "stillImagePath": "synthetic-motion-still.jpg",
+      "dimensionId": "visual_quality",
+      "questionId": "clarity",
+      "score": 4,
+      "confidence": 4,
+      "explanation": "The colored regions and moving patterns remain distinguishable, with only minor compression around sharp edges."
+    }
+  },
+  "responseConfig": {
+    "score": {
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "minLabel": "Does not meet",
+      "maxLabel": "Fully meets"
+    },
+    "confidence": {
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "minLabel": "Uncertain",
+      "maxLabel": "Very certain"
+    },
+    "explanationRequired": true
+  },
+  "videos": [
+    {
+      "id": "demo_video_01",
+      "title": "Synthetic Motion Demo",
+      "fileName": "synthetic-motion-demo.mp4",
+      "textFileName": "synthetic-motion-transcript.txt",
+      "description": "A locally generated test pattern used only to demonstrate the platform."
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "visual_quality",
+      "title": "Visual Quality",
+      "description": "Evaluate how clearly and consistently the video presents visible information.",
+      "questions": [
+        {
+          "id": "clarity",
+          "prompt": "Clarity",
+          "description": "Are the shapes, colors, and motion boundaries easy to distinguish?",
+          "scoreRubric": [
+            {"score": 0, "description": "The content is not identifiable."},
+            {"score": 1, "description": "Only isolated visual elements are identifiable."},
+            {"score": 2, "description": "Some patterns are visible, but important boundaries are unclear."},
+            {"score": 3, "description": "The main patterns are visible with noticeable quality issues."},
+            {"score": 4, "description": "Most patterns are clear with minor quality issues."},
+            {"score": 5, "description": "Shapes, colors, and motion boundaries are consistently clear."}
+          ],
+          "explanationRequired": true
+        },
+        {
+          "id": "stability",
+          "prompt": "Stability",
+          "description": "Does the motion appear smooth without unintended flicker or abrupt changes?",
+          "explanationRequired": true
+        }
+      ]
+    },
+    {
+      "id": "content_presentation",
+      "title": "Content Presentation",
+      "description": "Evaluate whether the clip communicates its visible events coherently.",
+      "questions": [
+        {
+          "id": "completeness",
+          "prompt": "Visual Consistency",
+          "description": "Are repeated patterns, colors, and movements presented consistently?",
+          "explanationRequired": true
+        },
+        {
+          "id": "coherence",
+          "prompt": "Coherence",
+          "description": "Does the motion progress in a predictable and understandable sequence?",
+          "explanationRequired": true
+        }
+      ]
+    }
+  ]
+}

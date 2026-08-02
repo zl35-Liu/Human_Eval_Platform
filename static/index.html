@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Human Eval Platform</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>Human Eval Platform</h1>
+        <p id="flowSummary">Loading evaluation workflow</p>
+      </div>
+      <nav class="tabs" aria-label="Main navigation">
+        <button class="tab is-active" data-view="participant">Participant</button>
+        <button class="tab" data-view="instructions">Instructions</button>
+        <button class="tab" data-view="evaluation">Evaluation</button>
+        <button class="tab" data-view="admin">Admin</button>
+        <button class="tab" data-view="results">Results</button>
+        <button id="logoutParticipant" class="tab session-action" type="button" hidden>Sign Out</button>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <section id="alert" class="alert" hidden></section>
+
+      <section id="participantView" class="view">
+        <div class="panel narrow">
+          <div class="section-title">
+            <h2>Participant Sign-in</h2>
+            <span class="badge">Step 1</span>
+          </div>
+          <p id="participantStatus" class="muted"></p>
+          <form id="participantForm" class="form-grid"></form>
+          <div class="actions">
+            <button id="participantNext" class="primary" type="button">Sign In and View Instructions</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="instructionsView" class="view" hidden>
+        <div class="panel">
+          <div class="section-title">
+            <h2 id="instructionsTitle">Evaluation Instructions</h2>
+            <span class="badge">Step 2</span>
+          </div>
+          <p id="instructionsOverview" class="lead"></p>
+          <div id="exampleVideoBox" class="video-box muted-box"></div>
+          <div id="scoringGuide" class="guide-list"></div>
+          <div id="dimensionGuide" class="dimension-grid"></div>
+          <div id="evaluationExample" class="answer-example"></div>
+          <div class="actions">
+            <button id="instructionsBack" class="secondary" type="button">Back to Sign-in</button>
+            <button id="startEvaluation" class="primary" type="button">Start Evaluation</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="evaluationView" class="view" hidden>
+        <section id="usagePolicyBanner" class="policy-banner" aria-live="polite" hidden>
+          <div>
+            <strong id="usagePolicyTitle">Daily Usage</strong>
+            <p id="usagePolicyMessage"></p>
+          </div>
+          <dl class="policy-metrics">
+            <div><dt>Traffic Today</dt><dd id="usagePolicyTraffic">0 GB</dd></div>
+            <div><dt>Reloads</dt><dd id="usagePolicyReloads">0</dd></div>
+            <div><dt>Current Speed</dt><dd id="usagePolicyRate">Normal</dd></div>
+            <div><dt>Resets</dt><dd id="usagePolicyReset">Next day at 00:00</dd></div>
+          </dl>
+        </section>
+        <div class="evaluation-layout">
+          <div class="video-panel panel">
+            <div class="section-title compact selector-title">
+              <div class="selector-row selector-title-row" aria-label="Video selection">
+                <button id="prevVideo" class="mini-nav" type="button" aria-label="Previous video">&lsaquo;</button>
+                <div class="custom-select" id="videoSelect">
+                  <button id="videoSelectButton" class="inline-selector heading-selector" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="videoSelectMenu"></button>
+                  <div id="videoSelectMenu" class="dropdown-menu" role="listbox" hidden></div>
+                </div>
+                <button id="nextVideo" class="mini-nav" type="button" aria-label="Next video">&rsaquo;</button>
+              </div>
+              <span id="videoProgress" class="badge"></span>
+            </div>
+            <div id="videoContainer" class="video-box"></div>
+            <div id="videoTextPanel" class="video-text-panel">
+              <div class="section-title compact">
+                <div class="video-text-title-row">
+                  <h2 id="videoTextTitle">Transcript</h2>
+                  <button id="toggleVideoTextLanguage" class="secondary text-language-toggle" type="button" hidden>View Translation</button>
+                </div>
+                <button id="expandVideoText" class="secondary" type="button">Expand on Right</button>
+              </div>
+              <div id="videoTextBox" class="video-text-box" role="region" aria-label="Transcript for the current video" tabindex="0"></div>
+            </div>
+          </div>
+          <div class="question-panel panel">
+            <div id="questionWorkPanel">
+              <div class="section-title compact selector-title">
+                <div class="selector-title-content">
+                  <div class="selector-row selector-title-row" aria-label="Dimension selection">
+                    <button id="prevDimension" class="mini-nav" type="button" aria-label="Previous dimension">&lsaquo;</button>
+                    <div class="custom-select" id="dimensionSelect">
+                      <button id="dimensionSelectButton" class="inline-selector heading-selector" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="dimensionSelectMenu"></button>
+                      <div id="dimensionSelectMenu" class="dropdown-menu" role="listbox" hidden></div>
+                    </div>
+                    <button id="nextDimension" class="mini-nav" type="button" aria-label="Next dimension">&rsaquo;</button>
+                  </div>
+                  <p id="currentDimensionDescription" class="muted"></p>
+                </div>
+                <span id="dimensionProgress" class="badge"></span>
+              </div>
+              <div class="selector-row question-title-row" aria-label="Criterion selection">
+                <button id="prevQuestion" class="mini-nav" type="button" aria-label="Previous criterion">&lsaquo;</button>
+                <div class="custom-select" id="questionSelect">
+                  <button id="questionSelectButton" class="inline-selector heading-selector" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="questionSelectMenu"></button>
+                  <div id="questionSelectMenu" class="dropdown-menu" role="listbox" hidden></div>
+                </div>
+                <button id="nextQuestion" class="mini-nav" type="button" aria-label="Next criterion">&rsaquo;</button>
+                <span id="subdimensionProgress" class="badge selector-row-badge"></span>
+              </div>
+              <div id="questionPrompt" class="question-prompt"></div>
+              <form id="answerForm" class="answer-form"></form>
+              <div class="actions split">
+                <button id="prevItem" class="secondary" type="button">Previous Item</button>
+                <button id="nextItem" class="secondary" type="button">Next Item</button>
+                <button id="submitEvaluation" class="primary" type="button">Submit Results</button>
+              </div>
+            </div>
+            <div id="expandedVideoTextPanel" class="expanded-video-text" hidden>
+              <div class="section-title compact">
+                <div>
+                  <div class="video-text-title-row">
+                    <h2 id="expandedVideoTextTitle">Transcript</h2>
+                    <button id="expandedToggleVideoTextLanguage" class="secondary text-language-toggle" type="button" hidden>View Translation</button>
+                  </div>
+                  <p id="expandedVideoTextMeta" class="muted"></p>
+                </div>
+                <button id="collapseVideoText" class="secondary" type="button">Return to Evaluation</button>
+              </div>
+              <div id="expandedVideoTextBox" class="video-text-box" role="region" aria-label="Expanded transcript for the current video" tabindex="0"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="adminView" class="view" hidden>
+        <div class="admin-layout">
+          <div class="panel">
+            <div class="section-title">
+              <h2>Workflow Editor</h2>
+              <span id="flowStatusBadge" class="badge"></span>
+            </div>
+            <div class="form-row">
+              <label for="flowSelect">Current Workflow</label>
+              <select id="flowSelect"></select>
+            </div>
+            <label for="flowEditor" class="editor-label">Workflow JSON</label>
+            <textarea id="flowEditor" spellcheck="false"></textarea>
+            <div class="actions">
+              <button id="saveDraft" class="secondary" type="button">Save Draft</button>
+              <button id="publishFlow" class="primary" type="button">Publish Workflow</button>
+              <button id="reloadFlow" class="secondary" type="button">Reload</button>
+            </div>
+          </div>
+          <aside class="panel">
+            <h2>Configuration Notes</h2>
+            <ul class="check-list">
+              <li>Video filenames are relative to the configured video directory.</li>
+              <li>Scores, confidence, and participant fields remain configurable.</li>
+              <li>Participants only receive published workflows.</li>
+              <li>Submissions retain their workflow version.</li>
+            </ul>
+          </aside>
+        </div>
+        <section class="panel admin-traffic-panel" aria-labelledby="adminTrafficTitle">
+          <div class="section-title">
+            <div>
+              <h2 id="adminTrafficTitle">Traffic and Usage Alerts</h2>
+              <p id="adminAllowlistStatus" class="muted"></p>
+            </div>
+            <button id="reloadAdminTraffic" class="secondary" type="button">Refresh</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Participant</th>
+                  <th>Traffic Today</th>
+                  <th>Reloads</th>
+                  <th>Rate Factor</th>
+                  <th>Video Requests</th>
+                  <th>Rejected Requests</th>
+                  <th>Last Activity</th>
+                </tr>
+              </thead>
+              <tbody id="adminTrafficTable"></tbody>
+            </table>
+          </div>
+          <div class="section-title compact admin-alerts-heading">
+            <h3>Threshold Alerts</h3>
+            <span id="adminAlertCount" class="badge">0</span>
+          </div>
+          <div id="adminTrafficAlerts" class="traffic-alert-list"></div>
+        </section>
+      </section>
+
+      <section id="resultsView" class="view" hidden>
+        <div class="panel">
+          <div class="section-title">
+            <h2>Evaluation Results</h2>
+            <button id="exportCsv" class="link-button" type="button">Export CSV</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Participant</th>
+                  <th>Status</th>
+                  <th>Updated</th>
+                  <th>Answers</th>
+                  <th>Overall Average</th>
+                  <th>Total Score</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="resultsTable"></tbody>
+            </table>
+          </div>
+          <div id="resultDetail" class="result-detail" hidden>
+            <div class="section-title">
+              <div>
+                <h3 id="resultDetailTitle"></h3>
+                <p id="resultDetailMeta" class="muted"></p>
+              </div>
+              <div class="result-detail-header-actions">
+                <button id="toggleResultCompletion" class="secondary" type="button" aria-expanded="false" aria-controls="resultCompletionOverview">Show Completion</button>
+                <button id="closeResultDetail" class="secondary" type="button">Close</button>
+              </div>
+            </div>
+            <section id="resultCompletionOverview" class="result-completion-overview" aria-labelledby="resultCompletionTitle" hidden>
+              <div class="result-completion-heading">
+                <div>
+                  <h4 id="resultCompletionTitle">Completion</h4>
+                  <p id="resultCompletionSummary" class="muted"></p>
+                </div>
+                <div class="result-status-legend" aria-label="Completion status legend">
+                  <span class="status-complete">Complete</span>
+                  <span class="status-partial">Draft</span>
+                  <span class="status-missing">Unanswered</span>
+                  <span class="status-needs-revision">Needs Revision</span>
+                </div>
+              </div>
+              <div id="resultCaseProgress" class="result-case-progress" aria-label="Completion by video"></div>
+              <div id="resultSubdimensionProgress" class="result-subdimension-progress" aria-label="Criterion completion for the current video"></div>
+            </section>
+            <div class="result-tabs" role="tablist" aria-label="Result detail views">
+              <button id="resultDetailViewTab" class="tab is-active" type="button">Item Review</button>
+              <button id="resultStatsTab" class="tab" type="button">Statistics</button>
+            </div>
+            <div id="resultDetailViewer" class="result-viewer">
+              <div class="result-video-area">
+                <div class="selector-row">
+                  <button id="prevResultVideo" class="mini-nav" type="button" aria-label="Previous video">&lsaquo;</button>
+                  <select id="resultVideoSelect" aria-label="Select video"></select>
+                  <button id="nextResultVideo" class="mini-nav" type="button" aria-label="Next video">&rsaquo;</button>
+                </div>
+                <div id="resultVideoBox" class="video-box muted-box"></div>
+                <p id="resultVideoDescription" class="muted"></p>
+              </div>
+              <div class="result-answer-area">
+                <div class="selector-row">
+                  <button id="prevResultDimension" class="mini-nav" type="button" aria-label="Previous dimension">&lsaquo;</button>
+                  <select id="resultDimensionSelect" aria-label="Select dimension"></select>
+                  <button id="nextResultDimension" class="mini-nav" type="button" aria-label="Next dimension">&rsaquo;</button>
+                </div>
+                <div class="selector-row question-title-row">
+                  <button id="prevResultQuestion" class="mini-nav" type="button" aria-label="Previous criterion">&lsaquo;</button>
+                  <select id="resultQuestionSelect" aria-label="Select criterion"></select>
+                  <button id="nextResultQuestion" class="mini-nav" type="button" aria-label="Next criterion">&rsaquo;</button>
+                  <span id="resultQuestionProgress" class="badge selector-row-badge"></span>
+                </div>
+                <div id="resultQuestionPrompt" class="question-prompt"></div>
+                <div class="readonly-answer-grid">
+                  <div class="readonly-metric">
+                    <span>Score</span>
+                    <strong id="resultScore">Not rated</strong>
+                  </div>
+                  <div class="readonly-metric">
+                    <span>Confidence</span>
+                    <strong id="resultConfidence">Not selected</strong>
+                  </div>
+                  <div class="readonly-answer-text">
+                    <span>Evaluation Notes</span>
+                    <div id="resultExplanation" class="result-explanation-editor" role="textbox" aria-readonly="true"></div>
+                  </div>
+                </div>
+                <div id="resultAnswerReview" class="answer-review-card" hidden></div>
+                <div class="actions result-review-actions">
+                  <button id="markAnswerForRevision" class="secondary danger-outline" type="button">Request Revision</button>
+                </div>
+              </div>
+            </div>
+            <div id="resultStatsPanel" class="result-stats" hidden>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Dimension</th>
+                      <th>Average</th>
+                      <th>Total</th>
+                      <th>Rated Items</th>
+                      <th>Item Scores</th>
+                    </tr>
+                  </thead>
+                  <tbody id="resultStatsTable"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="textReferenceMenu" class="text-reference-menu" role="menu" hidden>
+      <button id="addTextReference" type="button" role="menuitem">Quote in Evaluation</button>
+      <button id="copySelectedVideoText" type="button" role="menuitem">Copy Selection</button>
+    </div>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

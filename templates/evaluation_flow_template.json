@@ -1,0 +1,81 @@
+{
+  "id": "my-evaluation",
+  "title": "My Video Evaluation",
+  "status": "published",
+  "videoFolder": "my-evaluation",
+  "participantFields": [
+    {
+      "id": "participant_code",
+      "label": "Participant identifier",
+      "type": "text",
+      "required": true,
+      "placeholder": "Enter participant identifier"
+    },
+    {
+      "id": "group",
+      "label": "Group",
+      "type": "text",
+      "required": false,
+      "placeholder": "Optional"
+    }
+  ],
+  "instructions": {
+    "title": "Evaluation Instructions",
+    "overview": "Watch each video and complete the score, confidence, and explanation fields.",
+    "exampleVideoPath": "",
+    "scoringGuide": [
+      "Scores range from 0 to 5 and can be customized.",
+      "Confidence ranges from 1 to 5.",
+      "Explanations should state the evidence for each rating."
+    ]
+  },
+  "responseConfig": {
+    "score": {
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "minLabel": "Does not meet",
+      "maxLabel": "Fully meets"
+    },
+    "confidence": {
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "minLabel": "Uncertain",
+      "maxLabel": "Very certain"
+    },
+    "explanationRequired": true
+  },
+  "videos": [
+    {
+      "id": "video_001",
+      "title": "Video 1",
+      "fileName": "video-01.mp4",
+      "textFileName": "video-01.txt",
+      "description": "Add a short video description."
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "dimension_001",
+      "title": "Dimension 1",
+      "description": "Define the evaluation dimension.",
+      "questions": [
+        {
+          "id": "question_001",
+          "prompt": "Criterion 1",
+          "description": "Define the criterion used for this rating.",
+          "scoreRubric": [
+            {"score": 0, "description": "Does not meet the criterion."},
+            {"score": 1, "description": "Shows minimal evidence."},
+            {"score": 2, "description": "Partially meets the criterion with major issues."},
+            {"score": 3, "description": "Generally meets the criterion with visible issues."},
+            {"score": 4, "description": "Meets the criterion with minor issues."},
+            {"score": 5, "description": "Fully meets the criterion with clear evidence."}
+          ],
+          "explanationRequired": true
+        }
+      ]
+    }
+  ]
+}

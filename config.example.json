@@ -1,0 +1,38 @@
+{
+  "host": "127.0.0.1",
+  "port": 8000,
+  "database_path": "storage/human_eval.db",
+  "flow_dir": "data/flows",
+  "video_dir": "storage/videos",
+  "extra_video_dirs": [],
+  "video_preview_dir": "storage/video_previews",
+  "export_dir": "storage/exports",
+  "static_dir": "static",
+  "seed_flow_path": "data/flows/default_flow.json",
+  "video_cache_max_age_seconds": 31536000,
+  "participant_allowlist_path": "docs/participant-allowlist.md",
+  "participant_governance": {
+    "enabled": true,
+    "enforcement_mode": "enforce",
+    "session_ttl_seconds": 604800,
+    "allowlist_reload_seconds": 10,
+    "usage_flush_seconds": 30,
+    "session_cookie_secure": false,
+    "traffic_thresholds_gb": [2, 5, 10],
+    "traffic_factors": [1, 0.75, 0.5, 0],
+    "refresh_thresholds": [25, 50, 100],
+    "refresh_factors": [1, 0.75, 0.5, 0]
+  },
+  "traffic_protection": {
+    "enabled": true,
+    "video_requests_per_minute_per_ip": 240,
+    "api_requests_per_minute_per_ip": 360,
+    "other_requests_per_minute_per_ip": 240,
+    "max_video_connections_per_ip": 8,
+    "max_video_connections_total": 64,
+    "max_http_connections_total": 128,
+    "video_bandwidth_mib_per_second_per_ip": 8,
+    "video_bandwidth_mib_per_second_total": 64,
+    "socket_timeout_seconds": 30
+  }
+}
