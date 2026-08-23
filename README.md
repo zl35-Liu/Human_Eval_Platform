@@ -1,3 +1,8 @@
+<p align="right">
+  <strong>English</strong> |
+  <a href="./README.zh-CN.md">简体中文</a>
+</p>
+
 # Human Eval Platform
 
 A lightweight, self-hosted platform for structured human evaluation of videos or other annotation tasks. Evaluation tasks are defined in JSON, while participant progress and results are stored in SQLite.
